@@ -45,7 +45,8 @@ describe('User API Tests', () => {
 
   // Test successful login
   it('Logging on successfully', async () => {
-    const user = new User({ name: 'Joe Dale', email: 'joe@dale.com', password: 'JoEdAlE123!'});
+    const hashedPassword = hashPassword('JoEdAlE123!').toString();
+    const user = new User({ name: 'Joe Dale', email: 'joe@dale.com', password: hashedPassword});
     await user.save();
 
     const response = await request(app).get(`/users/joe@dale.com/JoEdAlE123!`);
@@ -55,7 +56,8 @@ describe('User API Tests', () => {
 
   // Test unsuccessful login
   it('Logging on unsuccessfully', async () => {
-    const user = new User({ name: 'Joe Dale', email: 'joe@dale.com', password: 'JoEdAlE123!'});
+    const hashedPassword = hashPassword('JoEdAlE123!').toString();
+    const user = new User({ name: 'Joe Dale', email: 'joe@dale.com', password: hashedPassword});
     await user.save();
 
     const response1 = await request(app).get(`/users/joe@dale.com/joedale`);

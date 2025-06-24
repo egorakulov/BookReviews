@@ -25,11 +25,13 @@ async function createUser(name, email, password) {
 async function login(email, password) {
     const hashedPassword = hashPassword(password).toString();
     const user = await User.findOne({ email });
-    console.log("LOGIN FUNCTION: Wanted: email: ", user.email, "password: ", user.password);
-    console.log("Result: email: ", email, "password: ", password);
+    // case when there is no user associated with this email
+    if (!user) return false;
+    // case when there is a user with this email and password is correct
     if (user.email == email && user.password == hashedPassword) {
         return true;
     }
+    // there is a user with this email, password is wrong
     return false;
 }
 
