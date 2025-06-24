@@ -15,7 +15,7 @@ beforeAll(async() => {
   if (mongoose.connection.readyState !== 0) {
     await mongoose.disconnect();
   }
-  await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect(url, {});
 });
 
 // refresh database before each test

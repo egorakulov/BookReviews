@@ -8,23 +8,20 @@ const mongoose = require('mongoose');
 
 // routes
 const userRouter = require('./routes/user');
-// const bookRouter = require('./routes/book');
+const bookRouter = require('./routes/book');
 // const reviewRouter = require('./routes/review');
 
 const app = express();
 
 // connect to the mongoDB database
-mongoose.connect('mongodb://localhost:27017/integration-testing', {
-    useNewURLParser: true, 
-    useUnifiedTopology: true,
-});
+mongoose.connect('mongodb://localhost:27017/integration-testing', {});
 
 // middleware to parse JSON requests
 app.use(express.json());
 
 // set up the routes
 app.use("/users", userRouter);
-// app.use('/books', bookRouter);
+app.use('/books', bookRouter);
 // app.use('/reviews', reviewRouter);
 
 module.exports = app;

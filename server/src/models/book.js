@@ -10,6 +10,7 @@ const bookSchema = new mongoose.Schema({
     genre: {type: String, required: true},
     isbn: {type: String, required: true, unique: true},
     avgRating: {type: Number, required: true},
+    numReviews: {type: Number, required: true},
 });
 
 // create user model from schema
