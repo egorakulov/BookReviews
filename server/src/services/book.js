@@ -4,12 +4,13 @@ All the services you can do surrounding books.
   - Lookup books by author (returns all books by this author), an array
   - Lookup books by genre (returns all books in this genre, sorted by decreasing avgRating), an array
   - Lookup books by ISBN (returns 1 book)
-  - Return all books in database, sorted by averageRating, an array
+  - Return all books in database, sorted by numReviews, an array
   - Add new books to the database
   - Edit books in the database
 */
 
 const Book = require('../models/book');
+const { sortByNumReviews } = require('../utils/book');
 
 /*
 -----------------------------------------------------------------------------
@@ -53,4 +54,18 @@ async function editBook(isbn, title, author, genre) {
 -----------------------------------------------------------------------------
 */
 
-module.exports = { addBook, editBook };
+async function findBookByISBN(isbn) {
+    return Book.findOne( {isbn});
+}
+
+/* 
+Returns all books in the database, sorted by descending numReviews
+Ties go to the book with the higher averageRating
+*/
+async function getAllBooks() {
+    const books = await Book.find();
+    const sorted = sortByNumReviews(books);
+    return sorted;
+}
+
+module.exports = { addBook, editBook, findBookByISBN, getAllBooks };

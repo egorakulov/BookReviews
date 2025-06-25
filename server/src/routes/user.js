@@ -44,7 +44,6 @@ router.get('/:email', async (req, res) => {
       res.status(404).json({ error: "User not found"});
     }
   } catch (error) {
-    console.log("ERROR ", error.message);
     res.status(400).json({ error: error.message});
   }
 })
