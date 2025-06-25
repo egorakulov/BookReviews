@@ -5,6 +5,7 @@ All it does is connect to MongoDB database, and calls the correct router for the
 
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 // routes
 const userRouter = require('./routes/user');
