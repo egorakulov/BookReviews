@@ -1,8 +1,8 @@
 /*
 All the services you can do surrounding books.
-  - Lookup books by name (returns all books with this name), an array
-  - Lookup books by author (returns all books by this author), an array
-  - Lookup books by genre (returns all books in this genre, sorted by decreasing avgRating), an array
+  o Lookup books by name (returns all books with this name), an array
+  o Lookup books by author (returns all books by this author), an array
+  o Lookup books by genre (returns all books in this genre, sorted by decreasing avgRating), an array
   - Lookup books by ISBN (returns 1 book)
   - Return all books in database, sorted by numReviews, an array
   - Add new books to the database
@@ -29,13 +29,13 @@ async function addBook(title, author, genre, isbn, averageRating, numReviews) {
     await book.save();
     return book;
 }
+
 /*
 ISBN of a book cannot be changed. Make sure to set it correctly when adding a book to the database
 Can edit everything else about a book (to fix typoes or change genres)
   - title
   - author
   - genre
-
 Returns: Book if it was successfully updated, false otherwise
 */
 async function editBook(isbn, title, author, genre) {
@@ -61,6 +61,7 @@ async function findBookByISBN(isbn) {
 /* 
 Returns all books in the database, sorted by descending numReviews
 Ties go to the book with the higher averageRating
+Returns: an array
 */
 async function getAllBooks() {
     const books = await Book.find();
@@ -68,4 +69,16 @@ async function getAllBooks() {
     return sorted;
 }
 
-module.exports = { addBook, editBook, findBookByISBN, getAllBooks };
+/*
+Returns all books in the database LIKE the given title
+Sorted by descending numReviews, with ties going to the book with higher averageRating
+Returns: an array
+*/
+async function getBooksByTitle(title) {
+    const regex = new RegExp(title, 'i');
+    const books = await Book.find( {title: regex }).exec();
+    const sorted = sortByNumReviews(books);
+    return sorted;
+}
+
+module.exports = { addBook, editBook, findBookByISBN, getAllBooks, getBooksByTitle };

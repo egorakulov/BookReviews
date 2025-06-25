@@ -3,7 +3,7 @@ Connecting routes to the functions defined in services/book.js
 */
 
 const express = require('express');
-const { addBook, editBook, findBookByISBN, getAllBooks } = require('../services/book');
+const { addBook, editBook, findBookByISBN, getAllBooks, getBooksByTitle } = require('../services/book');
 
 const router = express.Router();
 
@@ -62,6 +62,18 @@ router.get('/allBooks', async(req, res) => {
         res.status(200).json(books);
     } catch (error) {
         res.status(400).json({ error: error.message});
+    }
+});
+
+// route to find books by title
+router.get('/title/:title', async(req, res) => {
+    const { title } = req.params;
+    console.log(title);
+    try {
+        const books = await getBooksByTitle(title);
+        res.status(200).json(books);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
 });
 

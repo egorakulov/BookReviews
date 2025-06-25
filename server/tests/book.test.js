@@ -221,4 +221,41 @@ describe('Book API Tests', () => {
         expect(response.body[2].title).toBe("The Hunger Games");
         expect(response.body[4].title).toBe("The Rise and Fall of the Dinosaurs");
     });
+    // Test looking up books by title
+    it('Get title not in database', async () => {
+        await add5Books();
+        // encode using encodeURIComponent
+        const title = "Empire of Storms";
+        const url = `/books/title/${encodeURIComponent(title)}`;
+        const response = await request(app).get(url);
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(0);
+    })
+    it('Get titles in the database', async () => {
+        await add5Books();
+        // encode using encodeURIComponent
+        const title1 = "The Three Musketeers";
+        const url1 = `/books/title/${encodeURIComponent(title1)}`;
+        const response1 = await request(app).get(url1);
+        expect(response1.status).toBe(200);
+        expect(response1.body.length).toBe(1);
+        expect(response1.body[0].title).toBe("The Three Musketeers");
+        expect(response1.body[0].author).toBe("Alexandre Dumas");
+
+        const response2 = await request(app).get('/books/title/of');
+        expect(response2.status).toBe(200);
+        expect(response2.body.length).toBe(2);
+        expect(response2.body[0].title).toBe("The Count of Monte Cristo");
+        expect(response2.body[1].title).toBe("The Rise and Fall of the Dinosaurs");
+
+        const title3 = 'great gatsby';
+        const url3 = `/books/title/${encodeURIComponent(title3)}`;
+        const response3 = await request(app).get(url3);
+        expect(response3.status).toBe(200);
+        expect(response3.body.length).toBe(1);
+        expect(response3.body[0].title).toBe("The Great Gatsby");
+        expect(response3.body[0].author).toBe("F. Scott Fitzgerald");
+    })
+    // Test looking up books by author
+    // Test looking up books by genre
 });
