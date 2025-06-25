@@ -10,6 +10,9 @@ export default function AddBookPage() {
     numReviews: '',
   });
 
+  const [message, setMessage] = useState('');
+  const [isError, setIsError] = useState(false);
+
   function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
@@ -20,26 +23,34 @@ export default function AddBookPage() {
         ...formData,
         avgRating: parseFloat(formData.avgRating),
         numReviews: parseInt(formData.numReviews),
-    }
-    const res = await fetch('http://localhost:3232/books/addBook', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
+    };
 
-    if (res.ok) {
-      alert('Book added successfully!');
-      setFormData({
-        title: '',
-        author: '',
-        genre: '',
-        isbn: '',
-        avgRating: '',
-        numReviews: '',
-      });
-    } else {
-      const error = await res.json();
-      alert(`Failed to add book: ${error.error}`);
+    try {
+        const res = await fetch('http://localhost:3232/books/addBook', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+
+        if (res.ok) {
+            setMessage('Book added successfully!');
+            setIsError(false);
+            setFormData({
+                title: '',
+                author: '',
+                genre: '',
+                isbn: '',
+                avgRating: '',
+                numReviews: '',
+            });
+        } else {
+            const error = await res.json();
+            setMessage(`Failed to add book: ${error.error}`);
+            setIsError(true);
+        }
+    } catch (error) {
+        setMessage('Could not connect to the server');
+        setIsError(true);
     }
   }
 
@@ -61,6 +72,12 @@ export default function AddBookPage() {
         ))}
         <button type="submit">Add Book</button>
       </form>
+
+      {message && (
+        <p style={{ marginTop: '1rem', color: isError ? 'red': 'green'}}>
+            {message}
+        </p>
+      )}
     </div>
   );
 }

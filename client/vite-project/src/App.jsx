@@ -1,19 +1,16 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import AddBookPage from './pages/AddBookPage';
 import AllBooksPage from './pages/AllBooksPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
-    <div>
-      <nav style={{ padding: '1rem' }}>
-        <Link to="/">Add Book</Link> | <Link to="/all-books">See All Books</Link>
-      </nav>
-
       <Routes>
-        <Route path="/" element={<AddBookPage />} />
-        <Route path="/all-books" element={<AllBooksPage />} />
+        <Route path='/' element={<Navigate to='/users/login' />} />
+        <Route path="/books" element={<AddBookPage />} />
+        <Route path="/books/all-books" element={<AllBooksPage />} />
+        <Route path="/users/login" element={<LoginPage />} />
       </Routes>
-    </div>
   );
 }
 
