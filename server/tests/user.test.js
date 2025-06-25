@@ -35,12 +35,12 @@ describe('User API Tests', () => {
     const response = await request(app).post('/users').send({
       name: 'Egor Akulov',
       email: 'egor@example.com',
-      password: 'CharlieIsGay',
+      password: 'Charlie',
     });
     expect(response.status).toBe(201);
     expect(response.body.name).toBe('Egor Akulov');
     expect(response.body.email).toBe('egor@example.com');
-    expect(response.body.password).toBe(hashPassword('CharlieIsGay').toString());
+    expect(response.body.password).toBe(hashPassword('Charlie').toString());
   });
 
   // Test successful login
