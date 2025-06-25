@@ -81,4 +81,28 @@ async function getBooksByTitle(title) {
     return sorted;
 }
 
-module.exports = { addBook, editBook, findBookByISBN, getAllBooks, getBooksByTitle };
+/*
+Returns all books in the database with LIKE the given author
+Sorted by descending numReviews, with ties going to the book with higher averageRating
+Returns: an array
+*/
+async function getBooksByAuthor(author) {
+    const regex = new RegExp(author, 'i');
+    const books = await Book.find({ author: regex }).exec();
+    const sorted = sortByNumReviews(books);
+    return sorted;
+}
+
+/*
+Returns all books in the database with the given genre
+Sorted by descending numReviews, with ties going to the book with higher averageRating
+Returns: an array
+*/
+async function getBooksByGenre(genre) {
+    const regex = new RegExp(genre, 'i');
+    const books = await Book.find({ genre: regex}).exec();
+    const sorted = sortByNumReviews(books);
+    return sorted;
+}
+
+module.exports = { addBook, editBook, findBookByISBN, getAllBooks, getBooksByTitle, getBooksByAuthor, getBooksByGenre };

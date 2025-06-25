@@ -230,7 +230,7 @@ describe('Book API Tests', () => {
         const response = await request(app).get(url);
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(0);
-    })
+    });
     it('Get titles in the database', async () => {
         await add5Books();
         // encode using encodeURIComponent
@@ -255,7 +255,55 @@ describe('Book API Tests', () => {
         expect(response3.body.length).toBe(1);
         expect(response3.body[0].title).toBe("The Great Gatsby");
         expect(response3.body[0].author).toBe("F. Scott Fitzgerald");
-    })
+    });
     // Test looking up books by author
+    it('Get author in database', async () => {
+        await add5Books();
+        // encode using encodeURIComponent
+        const author1 = 'Dumas';
+        const url1 = `/books/author/${encodeURIComponent(author1)}`;
+        const response1 = await request(app).get(url1);
+        expect(response1.status).toBe(200);
+        expect(response1.body.length).toBe(2);
+        expect(response1.body[0].title).toBe("The Count of Monte Cristo");
+        expect(response1.body[1].title).toBe("The Three Musketeers");
+
+        const author2 = "Collins";
+        const url2 = `/books/author/${encodeURIComponent(author2)}`;
+        const response2 = await request(app).get(url2);
+        expect(response2.status).toBe(200);
+        expect(response2.body.length).toBe(1);
+        expect(response2.body[0].title).toBe("The Hunger Games");
+    });
+    it('Get author not in database', async () => {
+        await add5Books();
+        // encode using encodeURIComponent
+        const author = "Egor Akulov";
+        const url = `/books/author/${encodeURIComponent(author)}`;
+        const response = await request(app).get(url);
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(0);
+    });
     // Test looking up books by genre
+    it('Get books by genre', async () => {
+        await add5Books();
+        // enocde using encodeURIComponent
+        const genre = 'classic';
+        const url = `/books/genre/${encodeURIComponent(genre)}`;
+        const response = await request(app).get(url);
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(3);
+        expect(response.body[0].title).toBe("The Great Gatsby");
+        expect(response.body[1].title).toBe("The Count of Monte Cristo");
+        expect(response.body[2].title).toBe("The Three Musketeers");
+    });
+    it('Books by Genre but not a real genre', async () => {
+        await add5Books();
+        // encode using encodeURIComponent
+        const genre = 'EGOR';
+        const url = `/books/genre/${encodeURIComponent(genre)}`;
+        const response = await request(app).get(url);
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(0);
+    });
 });
