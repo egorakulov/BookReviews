@@ -43,8 +43,10 @@ export default function LoginPage() {
 
     return (
         <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-            <h1>Login</h1>
-            <form onSubmit={handleSubmit} style={{border: 'thin solid grey', padding: '1rem', borderRadius: '0.5rem'}}>
+            <h1>Welcome to Book Reviews!</h1>
+            <p>Book Reviews is a platform that allows you to review your favorite books and search for your next book to read!</p>
+            <h2>Login</h2>
+            <form onSubmit={handleSubmit} style={{border: 'thin solid grey', padding: '2rem', borderRadius: '5rem'}}>
                 {['email', 'password'].map((field) => (
                     <div key={field}>
                         <label style={{ paddingRight: '1rem' }}>{field.charAt(0).toUpperCase() + field.slice(1)}: </label>

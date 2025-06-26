@@ -54,8 +54,8 @@ export default function CreateUser() {
     return (
       <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '2rem'}}>
         <h1>New User</h1>
-        <p>Welcome to Book Reviews! Enter the following information to create an account and access the platform!</p>
-        <form onSubmit={handleSubmit}>
+        <p>All the books you ever want - right at your fingertips. Just create an account!</p>
+        <form onSubmit={handleSubmit} style={{border: 'thin solid grey', padding: '2rem', borderRadius: '5rem'}}>
             {['name', 'email', 'password', 'password2'].map((field) => (
                 <div key={field}>
                     <label style={{paddingRight: '1rem'}}>
@@ -71,8 +71,8 @@ export default function CreateUser() {
                 </div>
             ))}
             <div style={{display: 'flex', justifyContent: 'center', marginTop: '1rem'}}>
-                <button type="submit" style={{padding: '0.25rem', borderRadius: '0.5rem'}}>Create Account!</button>
-                <button type="button" onClick={handleLoginNav}style={{padding: '0.25rem', borderRadius: '0.5rem'}}>Go Back</button>
+                <button type="submit" style={{padding: '0.25rem', borderRadius: '0.5rem', marginRight: '0.25rem'}}>Create Account!</button>
+                <button type="button" onClick={handleLoginNav}style={{padding: '0.25rem', borderRadius: '0.5rem', marginLeft: '0.25rem'}}>Go Back</button>
             </div>
         </form>
 
