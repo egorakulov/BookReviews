@@ -13,6 +13,7 @@ const bookRouter = require('./routes/book');
 // const reviewRouter = require('./routes/review');
 
 const app = express();
+app.use(cors());
 
 // connect to the mongoDB database
 mongoose.connect('mongodb://localhost:27017/integration-testing', {});

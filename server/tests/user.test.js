@@ -32,7 +32,7 @@ afterAll(async () => {
 describe('User API Tests', () => {
   // Test creating a new user
   it('Creating a new user', async () => {
-    const response = await request(app).post('/users').send({
+    const response = await request(app).post('/users/create-user').send({
       name: 'Egor Akulov',
       email: 'egor@example.com',
       password: 'Charlie',
@@ -42,6 +42,20 @@ describe('User API Tests', () => {
     expect(response.body.email).toBe('egor@example.com');
     expect(response.body.password).toBe(hashPassword('Charlie').toString());
   });
+  it('Adding a user already in the database', async () => {
+    const resposne = await request(app).post('/users/create-user').send({
+      name: 'Egor Akulov',
+      email: 'egor@example.com',
+      password: 'Charlie'
+    });
+
+    const response2 = await request(app).post('/users/create-user').send({
+      name: 'Egor',
+      email: 'egor@example.com',
+      password: 'Charlie',
+    });
+    expect(response2.status).toBe(422);
+  })
 
   // Test successful login
   it('Logging on successfully', async () => {
@@ -49,7 +63,10 @@ describe('User API Tests', () => {
     const user = new User({ name: 'Joe Dale', email: 'joe@dale.com', password: hashedPassword});
     await user.save();
 
-    const response = await request(app).get(`/users/joe@dale.com/JoEdAlE123!`);
+    const response = await request(app).post(`/users/login`).send({
+      email: 'joe@dale.com',
+      password: 'JoEdAlE123!',
+    });
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
   });
@@ -60,13 +77,22 @@ describe('User API Tests', () => {
     const user = new User({ name: 'Joe Dale', email: 'joe@dale.com', password: hashedPassword});
     await user.save();
 
-    const response1 = await request(app).get(`/users/joe@dale.com/joedale`);
+    const response1 = await request(app).post(`/users/login`).send({
+      email: 'joe@dale.com',
+      password:'hello',
+    });
     expect(response1.status).toBe(401);
 
-    const response2 = await request(app).get(`/users/joeb@dale.com/JoEdAlE123!`);
+    const response2 = await request(app).post(`/users/login`).send({
+      email: 'joeb@dale.com',
+      password: 'JoEdAlE123!',
+    });
     expect(response2.status).toBe(401);
 
-    const response3 = await request(app).get(`/users/joeb@dale.com/joedale`);
+    const response3 = await request(app).post(`/users/login`).send({
+      email: 'joeb@dale.com',
+      password:'joe dale',
+    });
     expect(response3.status).toBe(401);
   });
 
@@ -75,7 +101,7 @@ describe('User API Tests', () => {
     const user = new User({name: 'Mikey Sherlock', email: 'mikey@example.com', password: hashPassword('hello').toString()});
     await user.save();
 
-    const response = await request(app).get(`/users/mikey@example.com`);
+    const response = await request(app).get(`/users/get-email/mikey@example.com`);
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("Mikey Sherlock");
     expect(response.body.email).toBe("mikey@example.com");
@@ -84,7 +110,7 @@ describe('User API Tests', () => {
 
   // Test retrieving by email when no user exists
   it('Retrieving user by email, user does not exist', async () => {
-    const response = await request(app).get(`/users/doesnotexist@example.com`);
+    const response = await request(app).get(`/users/get-email/doesnotexist@example.com`);
     expect(response.status).toBe(404);
   })
 });

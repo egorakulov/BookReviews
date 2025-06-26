@@ -30,24 +30,26 @@ export default function LoginPage() {
     async function handleSubmit(e) {
         e.preventDefault();
         const res = await login(formData.email, formData.password);
-        if (res) {
+        if (res === 200) {
             // logged in, switch page to add books page
             handleLogin();
-        } else {
+        } else if (res === 401){
             // not logged in, go back to same page with text: incorrect username or password
-            setMessage("Username or password was incorrect");
+            setMessage("Either no account associated with this email, or password was incorrect");
+        } else {
+            setMessage("Error occurred when handling your request - please try again later");
         }
     }
 
     return (
         <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <h1>Login</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{border: 'thin solid grey', padding: '1rem', borderRadius: '0.5rem'}}>
                 {['email', 'password'].map((field) => (
                     <div key={field}>
                         <label style={{ paddingRight: '1rem' }}>{field.charAt(0).toUpperCase() + field.slice(1)}: </label>
                         <input
-                            type="text"
+                            type = {field === 'password' ? 'password' : 'text'}
                             name={field}
                             value={formData[field]}
                             onChange={handleChange}
@@ -55,8 +57,10 @@ export default function LoginPage() {
                         />
                     </div>
                 ))}
-                <button type="submit">Login</button>
-                <button type="button" onClick={handleCreateUser}>Create Account</button>
+                <div style={{display: 'flex', justifyContent: 'center', marginTop: '1rem'}}>
+                    <button type="submit" style={{padding: '0.5rem', borderRadius: '0.5rem', marginRight: '0.25rem'}}>Login</button>
+                    <button type="button" style={{padding: '0.5rem', borderRadius: '0.5rem', marginLeft: '0.25rem'}} onClick={handleCreateUser}>Create Account</button>
+                </div>
             </form>
 
             {message && (

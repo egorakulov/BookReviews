@@ -1,3 +1,7 @@
+/*
+The Add Book Page
+*/
+
 import { useState } from 'react';
 
 export default function AddBookPage() {

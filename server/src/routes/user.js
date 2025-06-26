@@ -8,19 +8,24 @@ const { createUser, login, getUserByEmail } = require('../services/user');
 const router = express.Router();
 
 // route to create new user
-router.post('/', async(req, res) => {
+router.post('/create-user', async(req, res) => {
   const { name, email, password } = req.body;
   try {
-    const user = await createUser(name, email, password);
-    res.status(201).json(user);
+    const check = await getUserByEmail(email);
+    if (check) {
+      res.status(422).json({error: "Already contain a user with this email"});
+    } else {
+      const user = await createUser(name, email, password);
+      res.status(201).json(user);
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
 // route to login user
-router.get('/:email/:password', async (req, res) => {
-  const { email, password } = req.params;
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
   try {
     const loggedIn = await login(email, password);
     if (loggedIn) {
@@ -34,7 +39,7 @@ router.get('/:email/:password', async (req, res) => {
 });
 
 // route to get user by email
-router.get('/:email', async (req, res) => {
+router.get('/get-email/:email', async (req, res) => {
   const { email } = req.params;
   try {
     const name = await getUserByEmail(email);
