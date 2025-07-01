@@ -3,7 +3,8 @@ The Add Book Page
 */
 
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavBar } from '../components/NavBar';
+
 
 export default function AddBookPage() {
   const [formData, setFormData] = useState({
@@ -17,14 +18,9 @@ export default function AddBookPage() {
 
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
-  const navigate = useNavigate();
 
   function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
-
-  function handleAllBooksNav() {
-    navigate('/books/all-books');
   }
 
   async function handleSubmit(e) {
@@ -64,29 +60,15 @@ export default function AddBookPage() {
     }
   }
 
-  function navButtons(title, callBack) {
-    return <button 
-      onClick={callBack}
-      style={{border: 'none', background: 'none', fontSize: '2rem', padding: '1rem', marginLeft: '1rem', marginRight: '1rem'}}
-      
-    >{title}</button>
-  }
-
   return (
     <div>
-      <nav>
-        <div style={{display: 'flex', justifyContent: 'center', background: '#ede8d0'}}>
-          {navButtons("All Books", handleAllBooksNav)}
-          {navButtons("Search for Books", null)}
-          {navButtons("Recent Reviews", null)}
-        </div>
-      </nav>
+      <div>{NavBar()}</div>
         <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
         <h1>Add a Book</h1>
         <form onSubmit={handleSubmit} style={{border: 'thin solid grey', padding: '2rem', borderRadius: '5rem'}}>
           {['title', 'author', 'genre', 'isbn', 'avgRating', 'numReviews'].map((field) => (
             <div key={field}>
-              <label>{field}: </label>
+              <label style={{marginRight: '0.5rem'}}>{field}: </label>
               <input
                 type="text"
                 name={field}
