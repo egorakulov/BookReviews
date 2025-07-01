@@ -4,6 +4,7 @@ import AllBooksPage from './pages/AllBooksPage';
 import LoginPage from './pages/LoginPage';
 import CreateNewUserPage from './pages/CreateNewUserPage';
 import SearchBooksPage from './pages/SearchBooksPage';
+import SearchResultsPage from './pages/SearchResultsPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/books/add-books" element={<AddBookPage />} />
         <Route path="/books/all-books" element={<AllBooksPage />} />
         <Route path="/books/search" element={<SearchBooksPage />} />
+        <Route path="/books/search/result/:field/:query" element={<SearchResultsPage />}/>
         <Route path="/users/login" element={<LoginPage />} />
         <Route path='/users/create-new-user' element={<CreateNewUserPage />} />
       </Routes>

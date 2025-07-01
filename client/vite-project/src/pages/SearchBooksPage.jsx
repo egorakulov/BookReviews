@@ -24,9 +24,9 @@ export default function SearchBooksPage() {
     }
 
     function displaySearchResults(searchField, query) {
-        const url = `${encodeURIComponent(searchField + "/"+ query)}`
-        const fullUrl = `/books/result/${url}`
-        navigate(`${fullUrl}}`)
+        const url = `${encodeURIComponent(searchField)}/${encodeURIComponent(query)}`
+        const fullUrl = `/books/search/result/${url}`
+        navigate(`${fullUrl}`)
     }
 
     async function handleSubmit(e) {
@@ -34,16 +34,17 @@ export default function SearchBooksPage() {
         if (query === '') {
             setIsError(true);
             setMessage("YOU ARE SEARCHING FOR NOTHING");
+            return;
         }
-        if (searchField !== 'Title' ||
-            searchField !== 'Author' ||
+        if (searchField !== 'Title' &&
+            searchField !== 'Author' &&
             searchField !== 'Genre'
         ) {
             setIsError(true);
-            setMessage("ERROR: Invalid selection from drop down menu");
+            setMessage("ERROR: Invalid selection from drop down menu " + searchField);
+            return;
         }
 
-        if (isError) return;
         displaySearchResults(searchField.toLowerCase(), query.toLowerCase());
     }
 
@@ -70,7 +71,6 @@ export default function SearchBooksPage() {
                         name='query'
                         value={query}
                         onChange={handleQueryChange}
-                        required
                     />
                 </div>
 

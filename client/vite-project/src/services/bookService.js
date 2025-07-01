@@ -9,3 +9,9 @@ export async function getAllBooks() {
     if (!res.ok) throw new Error('Failed to fetch books');
     return res.json();
 }
+
+export async function getSearchResults(searchField, query) {
+    const res = await fetch(`${API_BASE}/books/${searchField}/${encodeURIComponent(query)}`);
+    if (!res.ok) throw new Error('Failed to fetch search results');
+    return res.json();
+}
